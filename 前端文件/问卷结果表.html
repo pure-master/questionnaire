@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="GBK" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>问卷结果表</title>
+    <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vue.js"></script>
+    <style>
+        body {
+            background-size: cover;
+        }
+    </style>
+</head>
+<body background="img/君名.webp">
+    <style>
+        #toptitle {
+            color: black;
+            text-align: center;
+        }
+
+        #result {
+            color: yellow;
+            height: auto;
+            width: auto;
+            text-align: center;
+        }
+
+        #div {
+            display: inline-block;
+            text-align: center;
+            width: 1500px;
+        }
+        #page1 {
+            color: black;
+            height: 20px;
+            width: 80px;
+            text-align: center;
+        }
+        #page2 {
+            color: black;
+            height: 20px;
+            width: 50px;
+        }
+        #page3 {
+            color: black;
+            height: 20px;
+            width: 80px;
+        }
+    </style>
+    <div id="toptitle">
+        <h1 id="title"> 问卷结果表</h1>
+    </div>
+    <div id="result" >
+        <table>
+            <thead>
+                <tr>
+                    <th>年龄</th>
+                    <th>是否了解字节跳动</th>
+                    <th>最常用的产品</th>
+                    <th>喜欢的短视频类型</th>
+                    <th>是否生产过内容</th>
+                    <th>一天刷小视频时间</th>
+                    <th>产品不足之处</th>
+                    <th>有无充值过</th>
+                    <th>最常参加的活动</th>
+                    <th>哪方面待创新</th>
+                    <th>是否有望生产长视频</th>
+                    <th>长视频发展过程是否会与“爱优腾”与芒果较量</th>
+                    <th>要依靠什么能力发展并且成功“出海”</th>
+                    <th>在传媒领域的展望</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in answers.rows">
+                    <td>{{item.age}}</td>
+                    <td>{{item.know}}</td>
+                    <td>{{item.app}}</td>
+                    <td>{{item.shortVideo}}</td>
+                    <td v-if="0==item.publish">否</td>
+                    <td v-else>是</td>
+                    <td>{{item.spendTime}}</td>
+                    <td>{{item.shortcoming}}</td>
+                    <td>{{item.recharge}}</td>
+                    <td>{{item.activity}}</td>
+                    <td>{{item.innovation}}</td>
+                    <td v-if="0==item.hope">没有</td>
+                    <td v-else>有希望</td>
+                    <td v-if="0==item.agree">不同意，“爱优腾”与芒果不会被冲击</td>
+                    <td v-else>同意，字节跳动发展态势迅速，会在技术不断成熟下生产长视频内容</td>
+                    <td>{{item.ability}}</td>
+                    <td>{{item.prospect}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="div">
+        <input type="button" id="page1" value="上一页" onclick="lastPage()" />
+        <input type="text" id="page2" readonly="readonly" value="5条/页" />
+        <input type="button" id="page3" value="下一页" onclick="nextPage()" />
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#result",
+            data: {
+                answers: {},
+                page:1,
+                pageSize:5
+            },
+            mounted() {
+                //发送异步请求,加载数据
+                axios.get("http://localhost:8080/bytedance?page="+this.page+"&pageSize="+this.pageSize).then(result => {
+                    console.log(result.data);
+                    this.answers = result.data.data;
+                });
+            }
+        });
+        function lastPage() {
+            if (vm.page > 1) {
+                var page = vm.page - 1;
+                vm.page = page;
+                axios.get("http://localhost:8080/bytedance?page=" + vm.page + "&pageSize=" + vm.pageSize).then(result => {
+                    console.log(result.data);
+                    vm.answers = result.data.data;
+                });
+            }
+        }
+        function nextPage() {
+            if ((vm.page * vm.pageSize) < vm.answers.total) {
+                var page = vm.page + 1;
+                vm.page = page;
+                axios.get("http://localhost:8080/bytedance?page=" + vm.page + "&pageSize=" + vm.pageSize).then(result => {
+                    console.log(result.data);
+                    vm.answers = result.data.data;
+                });
+            }
+        }
+    </script>
+</body>
+</html>

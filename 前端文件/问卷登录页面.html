@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="GBK" />
+    <title>字节跳动问卷登录页面</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vue.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <style>
+        body {
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body background="img/糸守湖.webp">
+    <style>
+        #title {
+            color: black;
+            text-align: center;
+            height: 220px;
+            line-height: 220px;
+        }
+
+        #form {
+            color: black;
+            height: auto;
+            width: auto;
+            text-align: center;
+        }
+    </style>
+    <h1 id=title>字节跳动问卷登录页面</h1>
+    <div id=login>
+        <form id=form>
+            Username: <input type="text" name="user" v-model="username"><br>
+            Password: <input type="password" name="password" v-model="password">
+            <br />
+            <input type="button" value="注册" onclick="register()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="登录" onclick="login()" />
+        </form>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#login",
+            data: {
+                username: "",
+                password: ""
+            }
+        })
+        function register() {
+            window.location.replace("问卷注册页面.html");
+        }
+        function login() {
+            var post_data = { "username": vm.username, "password": vm.password, "questionnaireid": null };
+            axios.post("http://localhost:8080/users/login", JSON.stringify(post_data), { headers: { "Content-Type": "application/json" } }).then(result => {
+                console.log(result.data);
+                if (0 == result.data.code) {
+                    alert("用户名或密码错误");
+                }
+                else if (null == result.data.data) {
+                    alert("登录成功！");
+                    window.open(encodeURI("字节跳动问卷首次填写.html?" + "username=" + vm.username));
+                }
+                else {
+                    alert("登录成功！");
+                    window.open(encodeURI("字节跳动问卷删改查.html?" + "username=" + vm.username));
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

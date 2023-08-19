@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="GBK" />
+    <title>字节跳动问卷注册页面</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vue.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <style>
+        body {
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body background="img/三叶与泷.webp">
+    <style>
+        #title {
+            color: black;
+            text-align: center;
+            height: 220px;
+            line-height: 220px;
+        }
+
+        #form {
+            color: black;
+            text-align: center;
+        }
+    </style>
+    <h1 id=title>字节跳动问卷注册页面</h1>
+    <div id=register>
+        <form id=form>
+            Username: <input type="text" name="username" v-model="username"><br />
+            Password: <input type="password" name="password1" v-model="password1"><br />
+            Password: <input type="password" name="password2" v-model="password2">
+            <br />
+            <input type="button" value="已有账号 登录" onclick="login()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="注册" onclick="register()" />
+        </form>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#register",
+            data: {
+                username: "",
+                password1: "",
+                password2: ""
+            },
+            mounted() {
+
+            }
+        });
+        function login() {
+            window.location.replace("问卷登录页面.html");
+        }
+        function register() {
+            if (vm.password1 != vm.password2) {
+                alert("两次密码输入不一致，请重新输入！");
+                vm.password1 = "";
+                vm.password2 = "";
+            }
+            else {
+                var post_data = { "username": vm.username, "password": vm.password1, "questionnaireid": null };
+                axios.post("http://localhost:8080/users/register", JSON.stringify(post_data), { headers: { "Content-Type": "application/json" } }).then(result => {
+                    console.log(result.data);
+                    if (0 == result.data.code) {
+                        alert("用户名已存在！");
+                    }
+                    else {
+                        alert("注册成功！");
+                        window.location.replace("问卷登录页面.html")
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

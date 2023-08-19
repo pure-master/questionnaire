@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>字节跳动调查问卷</title>
+    <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vue.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.serializejson.js"></script>
+    <style>
+        body {
+            text-align: center;
+            background-size: cover;
+        }
+
+        .txtcss1 {
+            display: inline-block;
+            text-align: left;
+        }
+        .front {
+            color: lightgreen;
+        }
+        .behind {
+            color: darkolivegreen;
+        }
+    </style>
+</head>
+<body background="img/三叶的守望.webp">
+    <div id="toptitle">
+        <h1 class="htitle" id="htitle"> 字节跳动调查问卷</h1>
+    </div>
+    <div id="bytedance" class="txtcss1">
+        <form id="form">
+            <div class="front">
+                <span>1. 您今年的年龄？</span>
+                <br />
+                <input type="radio" name="age" value="10-20" v-model="answers.age" />10-20
+                <br />
+                <input type="radio" name="age" value="20-30" v-model="answers.age" />20-30
+                <br />
+                <input type="radio" name="age" value="30-40" v-model="answers.age" />30-40
+                <br />
+                <input type="radio" name="age" value="40以上" v-model="answers.age" />40以上
+                <br />
+                <br />
+                <span>2.你曾了解过字节跳动这个公司吗？</span>
+                <br />
+                <input type="radio" name="know" value="了解过" v-model="answers.know" />了解过
+                <br />
+                <input type="radio" name="know" value="听说过" v-model="answers.know" />听说过
+                <br />
+                <input type="radio" name="know" value="从未了解" v-model="answers.know" />从未了解
+                <br />
+                <br />
+                <span>3.你平时最常用字节跳动哪些产品？</span>
+                <br />
+                <input type="checkbox" name="app" value="抖音" v-model="app" />抖音
+                <br />
+                <input type="checkbox" name="app" value="今日头条" v-model="app" />今日头条
+                <br />
+                <input type="checkbox" name="app" value="西瓜视频" v-model="app" />西瓜视频
+                <br />
+                <input type="checkbox" name="app" value="其他" v-model="app" />其他
+                <br />
+                <br />
+                <span>4.你喜欢的短视频类型是？</span>
+                <br />
+                <input type="checkbox" name="shortVideo" value="音乐类" v-model="shortVideo" />音乐类
+                <br />
+                <input type="checkbox" name="shortVideo" value="生活日常" v-model="shortVideo" />生活日常
+                <br />
+                <input type="checkbox" name="shortVideo" value="跳舞类" v-model="shortVideo" />跳舞类
+                <br />
+                <input type="checkbox" name="shortVideo" value="帅哥美女" v-model="shortVideo" />帅哥美女
+                <br />
+                <input type="checkbox" name="shortVideo" value="剧情短片" v-model="shortVideo" />剧情短片
+                <br />
+                <input type="checkbox" name="shortVideo" value="其他" v-model="shortVideo" />其他
+                <br />
+                <br />
+                <span>5.作为用户，你自己生产过内容吗？（是否发布过视频类、文字类作品）</span>
+                <br />
+                <input type="radio" name="publish" value="1" v-model="answers.publish" />是
+                <br />
+                <input type="radio" name="publish" value="0" v-model="answers.publish" />否
+                <br />
+                <br />
+                <span>6.你一天大概花多少时间在刷小视频上？</span>
+                <br />
+                <input type="radio" name="spendTime" value="1小时以内" v-model="answers.spendTime" />1小时以内
+                <br />
+                <input type="radio" name="spendTime" value="2个小时-4个小时" v-model="answers.spendTime" />2个小时-4个小时
+                <br />
+                <input type="radio" name="spendTime" value="4个小时以上" v-model="answers.spendTime" /> 4个小时以上
+                <br />
+                <br />
+
+
+                <span>7.您在使用字节跳动产品（如今日头条、抖音等过程中），有哪些地方还做的不够好？</span>
+                <br />
+                <input type="checkbox" name="shortcoming" value="内容质量方面" v-model="shortcoming" />内容质量方面
+                <br />
+                <input type="checkbox" name="shortcoming" value="界面设计方面" v-model="shortcoming" />界面设计方面
+                <br />
+                <input type="checkbox" name="shortcoming" value="运营活动方面" v-model="shortcoming" />运营活动方面
+                <br />
+                <input type="checkbox" name="shortcoming" value="头条-热搜方面" v-model="shortcoming" />头条-热搜方面
+                <br />
+                <input type="checkbox" name="shortcoming" value="其他" v-model="shortcoming" />其他
+                <br />
+                <br />
+                <span>8.有无充值过字节跳动旗下产品</span>
+                <br />
+                <input type="radio" name="recharge" value="0元" v-model="answers.recharge" />0元
+                <br />
+                <input type="radio" name="recharge" value="0-100" v-model="answers.recharge" />0-100
+                <br />
+                <input type="radio" name="recharge" value="100-500" v-model="answers.recharge" />100-500
+                <br />
+                <input type="radio" name="recharge" value="500以上" v-model="answers.recharge" />500以上
+                <br />
+                <br />
+            </div>
+            <div class="behind">
+                <span>9.你最常参加字节跳动产品的哪些活动</span>
+                <br />
+                <input type="checkbox" name="activity" value="直播带货" v-model="activity" />直播带货
+                <br />
+                <input type="checkbox" name="activity" value="教育学习" v-model="activity" />教育学习
+                <br />
+                <input type="checkbox" name="activity" value="搞笑直播" v-model="activity" />搞笑直播
+                <br />
+                <input type="checkbox" name="activity" value="游戏竞技" v-model="activity" />游戏竞技
+                <br />
+                <input type="checkbox" name="activity" value="新闻直播" v-model="activity" />新闻直播
+                <br />
+                <br />
+                <span>10.你最希望字节跳动创新哪方面的内容？</span>
+                <br />
+                <input type="checkbox" name="innovation" value="美食" v-model="innovation" />美食
+                <br />
+                <input type="checkbox" name="innovation" value="艺术" v-model="innovation" />艺术
+                <br />
+                <input type="checkbox" name="innovation" value="网红" v-model="innovation" />网红
+                <br />
+                <input type="checkbox" name="innovation" value="剧情" v-model="innovation" />剧情
+                <br />
+                <br />
+                <span>11.你认为字节跳动有望生产长视频（电视剧/电影）吗？</span>
+                <br />
+                <input type="radio" name="hope" value="1" v-model="answers.hope" />有希望
+                <br />
+                <input type="radio" name="hope" value="0" v-model="answers.hope" />没有
+                <br />
+                <br />
+                <span>12.字节跳动会在数字化发展的过程中与腾讯、爱奇艺、优酷、芒果等平台进行长视频的较量，你同意这种观点吗？</span>
+                <br />
+                <input type="radio" name="agree" value="1" v-model="answers.agree" />同意，字节跳动发展态势迅速，会在技术不断成熟下生产长视频内容
+                <br />
+                <input type="radio" name="agree" value="0" v-model="answers.agree" />不同意，“爱优腾”与芒果不会被冲击
+                <br />
+                <br />
+                <span>13.你认为字节跳动主要依靠什么能力发展并且成功“出海”？</span>
+                <br />
+            </div>
+            <div class="front">
+                <input type="checkbox" name="ability" value="管理-市场能力" v-model="ability" />管理-市场能力
+                <br />
+                <input type="checkbox" name="ability" value="创新-技术能力" v-model="ability" />创新-技术能力
+                <br />
+                <br />
+                <span>14.你对字节跳动在传媒领域有什么展望？（生产影视、小说等数字内容）</span>
+                <br />
+                <input type="text" name="prospect" value="" v-model="answers.prospect" />
+                <br />
+            </div>
+            <input type="button" value="更新此问卷" onclick="Update()" />
+            <input type="button" value="删除此问卷" onclick="Delete()" />
+
+        </form>
+    </div>
+    <script>
+        function getArray(str) {
+            var arr = str.split("、");
+            return arr;
+        }
+    </script>
+    <script>
+        function getStr(arr) {
+            var str = arr.join("、");
+            return str;
+        }
+    </script>
+    <script>
+        var username = decodeURI(document.URL);
+        var questionnaireId;
+        username = username.slice(username.indexOf("=") + 1);
+        var vm = new Vue({
+            el: "#bytedance",
+            data: {
+                answers: {},
+                app: [],
+                shortVideo: [],
+                shortcoming: [],
+                activity: [],
+                innovation: [],
+                ability: []
+            },
+            mounted() {
+                //发送异步请求,加载数据
+                axios.get("http://localhost:8080/users/" + username).then(result => {
+                    console.log(result.data);
+                    questionnaireId = result.data.data;
+                    axios.get("http://localhost:8080/bytedance/" + questionnaireId).then(result => {
+                        console.log(result.data);
+                        this.answers = result.data.data;
+                        vm.app = getArray(vm.answers.app);
+                        vm.shortVideo = getArray(vm.answers.shortVideo);
+                        vm.shortcoming = getArray(vm.answers.shortcoming);
+                        vm.activity = getArray(vm.answers.activity);
+                        vm.innovation = getArray(vm.answers.innovation);
+                        vm.ability = getArray(vm.answers.ability);
+                    });
+                });
+            }
+        });
+        function Update() {
+            vm.answers.app = getStr(vm.app);
+            vm.answers.shortVideo = getStr(vm.shortVideo);
+            vm.answers.shortcoming = getStr(vm.shortcoming);
+            vm.answers.activity = getStr(vm.activity);
+            vm.answers.innovation = getStr(vm.innovation);
+            vm.answers.ability = getStr(vm.ability);
+            axios.put("http://localhost:8080/bytedance", JSON.stringify(vm.answers), { headers: { "Content-Type": "application/json" } }).then(result => {
+                console.log(result.data);
+                alert("更新成功！");
+            });
+        }
+        function Delete() {
+            var url = "http://localhost:8080/bytedance/" + vm.answers.id
+            axios.delete(url).then(result => {
+                console.log(result.data);
+                alert("删除成功！");
+                window.open(encodeURI("字节跳动问卷首次填写.html?" + "username=" + username));
+            });
+        }
+    </script>
+</body>
+</html>
